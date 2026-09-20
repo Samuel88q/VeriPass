@@ -61,6 +61,18 @@ CONTRACT_ABI = [
 
 contract = w3.eth.contract(address=CONTRACT_ADDRESS, abi=CONTRACT_ABI)
 app = FastAPI(title="ETHCali NFC Ticket Validator")
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI(title="ETHCali NFC Ticket Validator")
+
+# AGREGA ESTO AQUÍ:
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permite peticiones desde cualquier frontend (Vercel)
+    allow_credentials=True,
+    allow_methods=["*"],  # Permite POST, GET, etc.
+    allow_headers=["*"],
+)
 
 # Demo-only AES-CMAC key. Replace with the NTAG key-management flow before production.
 DUMMY_NFC_KEY = b"ETHCaliDemoKey16"
