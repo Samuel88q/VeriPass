@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VeriPass</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎟️</text></svg>">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.15.0/dist/ethers.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            app: '#F0F2F5', card: '#FFFFFF', ink: '#1A1A1A', muted: '#737373', action: '#005CE6', line: '#DBDBDB',
+            'dark-app': '#0E1116', 'dark-card': '#1C1F26', 'dark-ink': '#F5F5F5', 'dark-muted': '#A3A3A3', 'dark-action': '#007BFF', 'dark-line': '#2D3139',
+            success: '#28A745', danger: '#DC3545',
+            aqua: '#005CE6', lime: '#28A745', ember: '#DC3545'
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .tab-active { color: #FFFFFF; background: #005CE6; }
+    .dark .tab-active { color: #FFFFFF; background: #007BFF; }
+    .tab-panel[hidden] { display: none; }
+  </style>
+</head>
+<body class="min-h-screen bg-app text-ink font-sans transition-colors duration-300 dark:bg-dark-app dark:text-dark-ink">
+  <main class="mx-auto max-w-6xl px-4 py-6 sm:px-6 md:px-10 md:py-10">
+    <header class="mb-8 flex flex-col gap-5 border-b border-line pb-7 dark:border-dark-line md:flex-row md:items-end md:justify-between">
+      <div>
+        <p class="mb-3 text-xs font-semibold uppercase tracking-[.24em] text-action dark:text-dark-action" data-i18n="header_sub">VERIPASS // EVENT ACCESS</p>
+        <h1 class="text-3xl font-bold tracking-tight md:text-5xl">VeriPass</h1>
+        <p class="mt-3 max-w-xl text-muted dark:text-dark-muted" data-i18n="header_desc">Acceso verificable y ticketing P2P regulado para eventos reales.</p>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2 text-xs font-semibold text-muted dark:text-dark-muted">
+          <span class="h-2 w-2 animate-pulse rounded-full bg-success"></span>HSK TESTNET / 133
+        </div>
+        <!-- Controles de UI Añadidos -->
+        <div class="flex items-center gap-3 border-l border-line pl-4 dark:border-dark-line">
+          <button id="lang-toggle" class="text-xs font-bold text-muted transition hover:text-ink dark:text-dark-muted dark:hover:text-dark-ink">EN</button>
+          <button id="theme-toggle" class="rounded-md p-1.5 transition hover:bg-line/50 dark:hover:bg-dark-line/50">
+            <span id="theme-icon">☀️</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <nav class="mb-8 grid grid-cols-3 gap-2 rounded-lg border border-line bg-card p-2 dark:border-dark-line dark:bg-dark-card" aria-label="Paneles">
+      <button class="tab tab-active min-h-12 rounded-lg px-3 py-3 text-xs font-bold uppercase tracking-wider transition" data-tab="staff" data-i18n="tab_staff">Staff</button>
+      <button class="tab min-h-12 rounded-lg px-3 py-3 text-xs font-bold uppercase tracking-wider text-muted transition hover:bg-app dark:text-dark-muted dark:hover:bg-dark-app" data-tab="manager" data-i18n="tab_mgr">Gerente</button>
+      <button class="tab min-h-12 rounded-lg px-3 py-3 text-xs font-bold uppercase tracking-wider text-muted transition hover:bg-app dark:text-dark-muted dark:hover:bg-dark-app" data-tab="market" data-i18n="tab_mkt">Usuario P2P</button>
+    </nav>
+
+    <section id="staff" class="tab-panel grid gap-6 lg:grid-cols-2">
+      <article class="rounded-lg border border-line bg-card p-6 shadow-sm dark:border-dark-line dark:bg-dark-card md:p-8">
+        <p class="text-xs font-semibold uppercase tracking-[.22em] text-action dark:text-dark-action" data-i18n="taquilla">01 / TAQUILLA</p>
+        <h2 class="mt-3 text-2xl font-bold" data-i18n="emit_title">Emitir acceso</h2>
+        <p class="mt-2 text-sm text-muted dark:text-dark-muted" data-i18n="emit_desc">El staff emite un ticket Soulbound a la wallet del asistente.</p>
+        <form id="mint-form" class="mt-8 space-y-4">
+          <label class="block text-sm font-semibold" for="attendee" data-i18n="wallet_lbl">Wallet del asistente</label>
+          <input id="attendee" required pattern="^0x[a-fA-F0-9]{40}$" placeholder="0x..." class="h-12 w-full rounded-lg border border-line bg-app px-4 text-sm outline-none transition focus:border-action dark:border-dark-line dark:bg-dark-app dark:focus:border-dark-action" />
+          <button data-label="Emitir Soulbound Ticket" data-i18n="emit_btn" class="min-h-12 w-full rounded-lg bg-action px-4 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 disabled:opacity-50 dark:bg-dark-action">Emitir Soulbound Ticket</button>
+        </form>
+        <div id="mint-result" class="mt-5 hidden rounded-lg border border-success bg-success/10 p-4 text-base"></div>
+      </article>
+
+      <article class="rounded-lg border border-line bg-card p-6 shadow-sm dark:border-dark-line dark:bg-dark-card md:p-8">
+        <p class="text-xs font-semibold uppercase tracking-[.22em] text-action dark:text-dark-action" data-i18n="puerta">02 / PUERTA</p>
+        <h2 class="mt-3 text-2xl font-bold" data-i18n="scan_title">Validar entrada</h2>
+        <p class="mt-2 text-sm text-muted dark:text-dark-muted" data-i18n="scan_desc">Simula el escaneo NFC con el Token ID.</p>
+        <form id="scan-form" class="mt-8 space-y-4">
+          <label class="block text-sm font-semibold" for="token-id" data-i18n="token_lbl">Token ID</label>
+          <input id="token-id" required min="1" type="number" placeholder="Ej. 1" class="h-12 w-full rounded-lg border border-line bg-app px-4 text-sm outline-none transition focus:border-action dark:border-dark-line dark:bg-dark-app dark:focus:border-dark-action" />
+          <button data-label="Validar Entrada" data-i18n="scan_btn" class="min-h-12 w-full rounded-lg bg-action px-4 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 disabled:opacity-50 dark:bg-dark-action">Validar Entrada</button>
+        </form>
+        <button id="qr-scan-button" data-label="📷 Escanear QR con Cámara" data-i18n="qr_btn" class="mt-4 min-h-14 w-full rounded-lg border-2 border-action px-4 py-3 text-base font-bold text-action transition hover:bg-action hover:text-white dark:border-dark-action dark:text-dark-action dark:hover:bg-dark-action">📷 Escanear QR con Cámara</button>
+        <div id="qr-reader" class="mt-4 w-full overflow-hidden rounded-lg"></div>
+        <div id="scan-result" class="mt-5 hidden rounded-lg p-5 text-base"></div>
+      </article>
+    </section>
+
+    <section id="manager" class="tab-panel" hidden>
+      <article class="mx-auto max-w-3xl rounded-lg border border-line bg-card p-6 shadow-sm dark:border-dark-line dark:bg-dark-card md:p-10">
+        <p class="text-xs font-semibold uppercase tracking-[.22em] text-action dark:text-dark-action" data-i18n="mgr_sub">MANAGER // TREASURY</p>
+        <h2 class="mt-3 text-3xl font-bold" data-i18n="mgr_title">Control de regalías</h2>
+        <p class="mt-3 max-w-xl text-muted dark:text-dark-muted" data-i18n="mgr_desc">Retira el 10% acumulado por cada operación del mercado P2P hacia la wallet owner del evento.</p>
+        <div class="mt-8 grid gap-4 sm:grid-cols-2">
+          <div class="rounded-lg border border-line bg-app p-5 dark:border-dark-line dark:bg-dark-app"><p class="text-xs text-muted dark:text-dark-muted" data-i18n="mgr_net">RED</p><p class="mt-2 text-xl font-bold text-action dark:text-dark-action">HSK / 133</p></div>
+          <div class="rounded-lg border border-line bg-app p-5 dark:border-dark-line dark:bg-dark-app"><p class="text-xs text-muted dark:text-dark-muted" data-i18n="mgr_role">ROL</p><p class="mt-2 text-xl font-bold text-action dark:text-dark-action">CONTRACT OWNER</p></div>
+        </div>
+        <button id="withdraw-button" data-label="Retirar regalías" data-i18n="mgr_btn" class="mt-8 min-h-12 w-full rounded-lg bg-action px-4 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 disabled:opacity-50 dark:bg-dark-action">Retirar regalías</button>
+        <div id="withdraw-result" class="mt-5 hidden rounded-lg border border-success bg-success/10 p-4 text-base"></div>
+      </article>
+    </section>
+
+    <section id="market" class="tab-panel" hidden>
+      <div class="mb-6 flex flex-col gap-4 rounded-lg border border-line bg-card p-6 dark:border-dark-line dark:bg-dark-card md:flex-row md:items-center md:justify-between">
+        <div><p class="text-xs font-semibold uppercase tracking-[.22em] text-action dark:text-dark-action" data-i18n="mkt_sub">USER WALLET // P2P</p><h2 class="mt-2 text-2xl font-bold" data-i18n="mkt_title">Mercado directo</h2><p class="mt-2 text-sm text-muted dark:text-dark-muted" data-i18n="mkt_desc">MetaMask firma la operación y el usuario paga su propio gas.</p></div>
+        <button id="connect-button" class="min-h-12 rounded-lg bg-action px-5 py-3 text-xs font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 dark:bg-dark-action" data-i18n="mkt_conn">Conectar MetaMask</button>
+      </div>
+      <p id="wallet-status" class="mb-6 hidden break-all text-xs text-muted dark:text-dark-muted"></p>
+      <article class="mb-6 rounded-lg border border-line bg-card p-6 dark:border-dark-line dark:bg-dark-card md:p-8">
+        <p class="text-xs font-semibold uppercase tracking-[.22em] text-action dark:text-dark-action" data-i18n="mkt_pass">ACCESS PASS</p>
+        <h3 class="mt-3 text-2xl font-bold" data-i18n="mkt_qr_title">Generar Pase de Acceso</h3>
+        <p class="mt-2 text-sm text-muted dark:text-dark-muted" data-i18n="mkt_qr_desc">Crea un QR dinámico para compartir el acceso asociado a un Token ID.</p>
+        <div class="mt-6 grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
+          <div>
+            <label class="block text-sm font-semibold" for="qr-token-id" data-i18n="token_lbl">Token ID</label>
+            <input id="qr-token-id" required min="1" type="number" placeholder="Ej. 1" class="mt-2 h-12 w-full rounded-lg border border-line bg-app px-4 text-sm outline-none focus:border-action dark:border-dark-line dark:bg-dark-app dark:focus:border-dark-action" />
+          </div>
+          <button id="generate-qr-button" class="min-h-12 rounded-lg bg-action px-6 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 dark:bg-dark-action" data-i18n="mkt_qr_btn">Generar QR</button>
+        </div>
+        <canvas id="qr-canvas" class="mx-auto mt-4 rounded-lg bg-white p-3"></canvas>
+        <p id="qr-status" class="mt-3 text-center text-sm text-muted dark:text-dark-muted"></p>
+      </article>
+      <div class="grid gap-6 lg:grid-cols-2">
+        <article class="rounded-lg border border-line bg-card p-6 dark:border-dark-line dark:bg-dark-card md:p-8"><p class="text-xs font-semibold uppercase tracking-[.22em] text-action dark:text-dark-action" data-i18n="mkt_list">LISTING</p><h3 class="mt-3 text-2xl font-bold" data-i18n="mkt_sell_title">Vender Ticket</h3><form id="sell-form" class="mt-7 space-y-4"><input id="sell-token" required min="1" type="number" placeholder="Token ID" data-i18n="mkt_sell_token" class="h-12 w-full rounded-lg border border-line bg-app px-4 text-sm outline-none focus:border-action dark:border-dark-line dark:bg-dark-app dark:focus:border-dark-action" /><input id="sell-price" required min="0" step="any" type="number" placeholder="Precio en HSK" data-i18n="mkt_sell_price" class="h-12 w-full rounded-lg border border-line bg-app px-4 text-sm outline-none focus:border-action dark:border-dark-line dark:bg-dark-app dark:focus:border-dark-action" /><button data-label="Listar ticket" data-i18n="mkt_sell_btn" class="min-h-12 w-full rounded-lg bg-action px-4 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 disabled:opacity-50 dark:bg-dark-action">Listar ticket</button></form><div id="sell-result" class="mt-5 hidden rounded-lg border border-success bg-success/10 p-4 text-base"></div></article>
+        <article class="rounded-lg border border-line bg-card p-6 dark:border-dark-line dark:bg-dark-card md:p-8"><p class="text-xs font-semibold uppercase tracking-[.22em] text-action dark:text-dark-action" data-i18n="mkt_buy">PURCHASE</p><h3 class="mt-3 text-2xl font-bold" data-i18n="mkt_buy_title">Comprar Ticket</h3><form id="buy-form" class="mt-7 space-y-4"><input id="buy-token" required min="1" type="number" placeholder="Token ID" data-i18n="mkt_buy_token" class="h-12 w-full rounded-lg border border-line bg-app px-4 text-sm outline-none focus:border-action dark:border-dark-line dark:bg-dark-app dark:focus:border-dark-action" /><input id="buy-price" required min="0" step="any" type="number" placeholder="Precio a pagar en HSK" data-i18n="mkt_buy_price" class="h-12 w-full rounded-lg border border-line bg-app px-4 text-sm outline-none focus:border-action dark:border-dark-line dark:bg-dark-app dark:focus:border-dark-action" /><button data-label="Comprar ticket" data-i18n="mkt_buy_btn" class="min-h-12 w-full rounded-lg bg-action px-4 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 disabled:opacity-50 dark:bg-dark-action">Comprar ticket</button></form><div id="buy-result" class="mt-5 hidden rounded-lg border border-success bg-success/10 p-4 text-base"></div></article>
+      </div>
+    </section>
+
+    <footer class="mt-8 flex flex-col gap-2 text-xs text-muted dark:text-dark-muted md:flex-row md:justify-between"><span data-i18n="footer_left">VERIPASS / REGULATED ACCESS</span><span>HSK TESTNET / CHAIN 133</span></footer>
+  </main>
+
+  <script>
+    // --- NUEVO: TEMA Y TRADUCCIÓN ---
+    const htmlElement = document.documentElement;
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    
+    // Restaurar Tema
+    if (localStorage.getItem('theme') === 'light') { htmlElement.classList.remove('dark'); }
+    const updateIcon = () => { themeIcon.textContent = htmlElement.classList.contains('dark') ? '☀️' : '🌙'; };
+    updateIcon();
+    
+    themeToggle.addEventListener('click', () => {
+      htmlElement.classList.toggle('dark');
+      updateIcon();
+      localStorage.setItem('theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // Diccionario i18n
+    const translations = {
+      es: {
+        header_sub: "VERIPASS // EVENT ACCESS", header_desc: "Acceso verificable y ticketing P2P regulado para eventos reales.",
+        tab_staff: "Staff", tab_mgr: "Gerente", tab_mkt: "Usuario P2P",
+        taquilla: "01 / TAQUILLA", emit_title: "Emitir acceso", emit_desc: "El staff emite un ticket Soulbound a la wallet del asistente.", wallet_lbl: "Wallet del asistente", emit_btn: "Emitir Soulbound Ticket",
+        puerta: "02 / PUERTA", scan_title: "Validar entrada", scan_desc: "Simula el escaneo NFC con el Token ID.", token_lbl: "Token ID", scan_btn: "Validar Entrada", qr_btn: "📷 Escanear QR con Cámara",
+        mgr_sub: "MANAGER // TREASURY", mgr_title: "Control de regalías", mgr_desc: "Retira el 10% acumulado por cada operación del mercado P2P hacia la wallet owner del evento.", mgr_net: "RED", mgr_role: "ROL", mgr_btn: "Retirar regalías",
+        mkt_sub: "USER WALLET // P2P", mkt_title: "Mercado directo", mkt_desc: "MetaMask firma la operación y el usuario paga su propio gas.", mkt_conn: "Conectar MetaMask",
+        mkt_pass: "ACCESS PASS", mkt_qr_title: "Generar Pase de Acceso", mkt_qr_desc: "Crea un QR dinámico para compartir el acceso asociado a un Token ID.", mkt_qr_btn: "Generar QR",
+        mkt_list: "LISTING", mkt_sell_title: "Vender Ticket", mkt_sell_token: "Token ID", mkt_sell_price: "Precio en HSK", mkt_sell_btn: "Listar ticket",
+        mkt_buy: "PURCHASE", mkt_buy_title: "Comprar Ticket", mkt_buy_token: "Token ID", mkt_buy_price: "Precio a pagar en HSK", mkt_buy_btn: "Comprar ticket",
+        footer_left: "VERIPASS / REGULATED ACCESS"
+      },
+      en: {
+        header_sub: "VERIPASS // EVENT ACCESS", header_desc: "Verifiable access and regulated P2P ticketing for real events.",
+        tab_staff: "Staff", tab_mgr: "Manager", tab_mkt: "P2P User",
+        taquilla: "01 / BOX OFFICE", emit_title: "Issue access", emit_desc: "Staff issues a Soulbound ticket to the attendee's wallet.", wallet_lbl: "Attendee Wallet", emit_btn: "Issue Soulbound Ticket",
+        puerta: "02 / GATE", scan_title: "Validate entry", scan_desc: "Simulate NFC scan using Token ID.", token_lbl: "Token ID", scan_btn: "Validate Entry", qr_btn: "📷 Scan QR with Camera",
+        mgr_sub: "MANAGER // TREASURY", mgr_title: "Royalty control", mgr_desc: "Withdraw the accumulated 10% from every P2P market operation to the event owner's wallet.", mgr_net: "NETWORK", mgr_role: "ROLE", mgr_btn: "Withdraw royalties",
+        mkt_sub: "USER WALLET // P2P", mkt_title: "Direct Market", mkt_desc: "MetaMask signs the operation and users pay their own gas.", mkt_conn: "Connect MetaMask",
+        mkt_pass: "ACCESS PASS", mkt_qr_title: "Generate Access Pass", mkt_qr_desc: "Create a dynamic QR to share access linked to a Token ID.", mkt_qr_btn: "Generate QR",
+        mkt_list: "LISTING", mkt_sell_title: "Sell Ticket", mkt_sell_token: "Token ID", mkt_sell_price: "Price in HSK", mkt_sell_btn: "List ticket",
+        mkt_buy: "PURCHASE", mkt_buy_title: "Buy Ticket", mkt_buy_token: "Token ID", mkt_buy_price: "Price to pay in HSK", mkt_buy_btn: "Buy ticket",
+        footer_left: "VERIPASS / REGULATED ACCESS"
+      }
+    };
+
+    let currentLang = localStorage.getItem('lang') || 'es';
+    const langToggle = document.getElementById('lang-toggle');
+    
+    const applyLanguage = (lang) => {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang][key]) {
+          if (el.tagName === 'INPUT') el.placeholder = translations[lang][key];
+          else el.textContent = translations[lang][key];
+          if (el.hasAttribute('data-label')) el.dataset.label = translations[lang][key];
+        }
+      });
+    };
+
+    langToggle.textContent = currentLang === 'es' ? 'EN' : 'ES';
+    applyLanguage(currentLang);
+
+    langToggle.addEventListener('click', () => {
+      currentLang = currentLang === 'es' ? 'en' : 'es';
+      langToggle.textContent = currentLang === 'es' ? 'EN' : 'ES';
+      localStorage.setItem('lang', currentLang);
+      applyLanguage(currentLang);
+    });
+
+    // --- LÓGICA ORIGINAL DEL PROYECTO ---
+    const CONTRACT_ADDRESS = '0xd57359dDD6fAf3792a37de9483c494Eb2B315833';
+    const CONTRACT_ABI = [
+      'function consumed(uint256) view returns (bool)', 'function ticketPrices(uint256) view returns (uint256)', 'function owner() view returns (address)', 'function ownerOf(uint256) view returns (address)', 'function balanceOf(address) view returns (uint256)', 'function tokenURI(uint256) view returns (string)', 'function tokenIdForHash(bytes32) view returns (uint256)', 'function ticketHash(uint256) view returns (bytes32)', 'function mintTicket(address to) returns (uint256)', 'function consumeTicket(uint256 tokenId)', 'function listTicket(uint256 tokenId, uint256 price)', 'function buyTicket(uint256 tokenId) payable', 'function withdraw()', 'function approve(address,uint256)', 'function setApprovalForAll(address,bool)', 'event TicketListed(uint256 indexed tokenId, address indexed seller, uint256 price)', 'event TicketSold(uint256 indexed tokenId, address indexed seller, address indexed buyer, uint256 price)', 'event TicketIssued(address indexed recipient, uint256 indexed tokenId, bytes32 indexed ticketHash, string metadataURI)', 'event TicketConsumed(uint256 indexed tokenId, address indexed attendee)', 'event TicketRevoked(uint256 indexed tokenId, bytes32 indexed ticketHash)'
+    ];
+    let browserProvider; let signer; let market;
+
+    // Actualizada para responder en el idioma correcto
+    const setBusy = (button, busy) => { button.disabled = busy; button.textContent = busy ? (currentLang === 'es' ? 'Procesando...' : 'Processing...') : button.dataset.label; };
+    const showResult = (element, message, tone = 'aqua') => { element.className = `mt-5 border border-${tone}/30 bg-${tone}/5 p-4 text-sm`; element.innerHTML = message; };
+    const errorMessage = (error) => error?.shortMessage || error?.reason || error?.message || 'Operación rechazada';
+    let qrScanner;
+
+    async function validateToken(tokenId) {
+      const result = document.querySelector('#scan-result');
+      const response = await fetch('/scan_nfc', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token_id: Number(tokenId), nfc_payload: 'demo' }) });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.detail || 'Ticket rechazado');
+      showResult(result, `<div class="text-center font-display text-2xl font-bold text-lime">ACCESO CONCEDIDO</div><div class="mt-2 break-all text-xs">TX: ${data.transaction_hash}</div>`, 'lime');
+    }
+
+    document.querySelectorAll('.tab').forEach((tab) => tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach((item) => item.classList.remove('tab-active'));
+      document.querySelectorAll('.tab-panel').forEach((panel) => { panel.hidden = true; });
+      tab.classList.add('tab-active');
+      document.querySelector(`#${tab.dataset.tab}`).hidden = false;
+    }));
+
+    async function connectWallet() {
+      if (!window.ethereum) throw new Error('Instala MetaMask para usar el mercado');
+      browserProvider = new ethers.BrowserProvider(window.ethereum);
+      await browserProvider.send('eth_requestAccounts', []);
+      const network = await browserProvider.getNetwork();
+      if (network.chainId !== 133n) throw new Error('Cambia MetaMask a HSK Chain Testnet (chain ID 133)');
+      signer = await browserProvider.getSigner();
+      market = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+      const address = await signer.getAddress();
+      document.querySelector('#wallet-status').textContent = currentLang === 'es' ? `Wallet conectada: ${address}` : `Wallet connected: ${address}`;
+      document.querySelector('#wallet-status').classList.remove('hidden');
+      document.querySelector('#connect-button').textContent = `${address.slice(0, 6)}...${address.slice(-4)}`;
+    }
+
+    document.querySelector('#connect-button').addEventListener('click', async () => { try { await connectWallet(); } catch (error) { alert(errorMessage(error)); } });
+
+    document.querySelector('#mint-form').addEventListener('submit', async (event) => {
+      event.preventDefault(); const button = event.target.querySelector('button'); const result = document.querySelector('#mint-result'); setBusy(button, true);
+      try { const response = await fetch('/mint', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ attendee_address: document.querySelector('#attendee').value.trim() }) }); const data = await response.json(); if (!response.ok) throw new Error(data.detail); showResult(result, `<strong class="text-lime">Ticket emitido</strong><br><span class="break-all">TX: ${data.transaction_hash}</span>`, 'aqua'); } catch (error) { showResult(result, `<strong class="text-ember">Error</strong><br>${errorMessage(error)}`, 'ember'); } setBusy(button, false);
+    });
+
+    document.querySelector('#scan-form').addEventListener('submit', async (event) => {
+      event.preventDefault(); const button = event.target.querySelector('button'); const result = document.querySelector('#scan-result'); setBusy(button, true);
+      try { await validateToken(document.querySelector('#token-id').value); } catch (error) { showResult(result, `<div class="text-center font-display text-2xl font-bold text-ember">ACCESO DENEGADO</div><div class="mt-2 text-center">${errorMessage(error)}</div>`, 'ember'); } setBusy(button, false);
+    });
+
+    document.querySelector('#generate-qr-button').addEventListener('click', () => {
+      const tokenId = document.querySelector('#qr-token-id').value;
+      const status = document.querySelector('#qr-status');
+      if (!tokenId || Number(tokenId) < 1) {
+        status.textContent = currentLang === 'es' ? 'Introduce un Token ID válido.' : 'Enter a valid Token ID.';
+        status.className = 'mt-3 text-center text-sm text-danger';
+        return;
+      }
+      const value = JSON.stringify({ id: tokenId, dyn: Date.now() });
+      new QRious({ element: document.getElementById('qr-canvas'), value, size: 200 });
+      status.textContent = currentLang === 'es' ? 'QR dinámico generado correctamente.' : 'Dynamic QR generated successfully.';
+      status.className = 'mt-3 text-center text-sm text-success';
+    });
+
+    document.querySelector('#qr-scan-button').addEventListener('click', async (event) => {
+      const button = event.currentTarget;
+      if (qrScanner) return;
+      setBusy(button, true);
+      button.dataset.label = currentLang === 'es' ? '📷 Detener escáner' : '📷 Stop scanner';
+      button.textContent = button.dataset.label;
+      qrScanner = new Html5QrcodeScanner('qr-reader', { fps: 10, qrbox: { width: 250, height: 250 } }, false);
+      const onScanSuccess = async (decodedText) => {
+        try {
+          const payload = JSON.parse(decodedText);
+          if (!payload.id || Number(payload.id) < 1) throw new Error('QR sin Token ID válido');
+          await qrScanner.clear();
+          qrScanner = null;
+          await validateToken(payload.id);
+        } catch (error) {
+          const result = document.querySelector('#scan-result');
+          showResult(result, `<div class="text-center font-display text-2xl font-bold text-ember">ACCESO DENEGADO</div><div class="mt-2 text-center">${errorMessage(error)}</div>`, 'ember');
+          if (qrScanner) { await qrScanner.clear().catch(() => {}); qrScanner = null; }
+        }
+        button.disabled = false;
+        button.dataset.label = currentLang === 'es' ? '📷 Escanear QR con Cámara' : '📷 Scan QR with Camera';
+        button.textContent = button.dataset.label;
+      };
+      qrScanner.render(onScanSuccess, () => {});
+    });
+
+    document.querySelector('#withdraw-button').addEventListener('click', async (event) => { const button = event.currentTarget; const result = document.querySelector('#withdraw-result'); setBusy(button, true); try { const response = await fetch('/withdraw', { method: 'POST' }); const data = await response.json(); if (!response.ok) throw new Error(data.detail); showResult(result, `<strong class="text-lime">Regalías retiradas</strong><br><span class="break-all">TX: ${data.transaction_hash}</span>`, 'lime'); } catch (error) { showResult(result, `<strong class="text-ember">Error</strong><br>${errorMessage(error)}`, 'ember'); } setBusy(button, false); });
+
+    document.querySelector('#sell-form').addEventListener('submit', async (event) => { event.preventDefault(); const button = event.target.querySelector('button'); const result = document.querySelector('#sell-result'); setBusy(button, true); try { if (!market) await connectWallet(); const tokenId = document.querySelector('#sell-token').value; const price = ethers.parseEther(document.querySelector('#sell-price').value); const tx = await market.listTicket(tokenId, price); await tx.wait(); showResult(result, `<strong class="text-aqua">Ticket listado</strong><br><span class="break-all">TX: ${tx.hash}</span>`, 'aqua'); } catch (error) { showResult(result, `<strong class="text-ember">Error</strong><br>${errorMessage(error)}`, 'ember'); } setBusy(button, false); });
+
+    document.querySelector('#buy-form').addEventListener('submit', async (event) => { event.preventDefault(); const button = event.target.querySelector('button'); const result = document.querySelector('#buy-result'); setBusy(button, true); try { if (!market) await connectWallet(); const tokenId = document.querySelector('#buy-token').value; const price = ethers.parseEther(document.querySelector('#buy-price').value); const tx = await market.buyTicket(tokenId, { value: price }); await tx.wait(); showResult(result, `<strong class="text-lime">Ticket comprado</strong><br><span class="break-all">TX: ${tx.hash}</span>`, 'lime'); } catch (error) { showResult(result, `<strong class="text-ember">Error</strong><br>${errorMessage(error)}`, 'ember'); } setBusy(button, false); });
+  </script>
+</body>
+</html>
