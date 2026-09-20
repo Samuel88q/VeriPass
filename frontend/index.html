@@ -133,6 +133,9 @@
   </main>
 
   <script>
+    // URL DE TU BACKEND EN RENDER (CAMBIA ESTA URL POR LA TUYA REAL)
+    const BACKEND_URL = 'https://veripassbackend.onrender.com';
+
     const htmlElement = document.documentElement;
     const themeToggle = document.getElementById('theme-toggle');
     const themeIcon = document.getElementById('theme-icon');
@@ -211,7 +214,7 @@
 
     async function validateToken(tokenId) {
       const result = document.querySelector('#scan-result');
-      const response = await fetch('/scan_nfc', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token_id: Number(tokenId), nfc_payload: 'demo' }) });
+      const response = await fetch(`${BACKEND_URL}/scan_nfc`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token_id: Number(tokenId), nfc_payload: 'demo' }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.detail || 'Ticket rechazado');
       showResult(result, `<div class="text-center font-display text-2xl font-bold text-lime">ACCESO CONCEDIDO</div><div class="mt-2 break-all text-xs">TX: ${data.transaction_hash}</div>`, 'lime');
@@ -242,7 +245,7 @@
 
     document.querySelector('#mint-form').addEventListener('submit', async (event) => {
       event.preventDefault(); const button = event.target.querySelector('button'); const result = document.querySelector('#mint-result'); setBusy(button, true);
-      try { const response = await fetch('/mint', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ attendee_address: document.querySelector('#attendee').value.trim() }) }); const data = await response.json(); if (!response.ok) throw new Error(data.detail); showResult(result, `<strong class="text-lime">Ticket emitido</strong><br><span class="break-all">TX: ${data.transaction_hash}</span>`, 'aqua'); } catch (error) { showResult(result, `<strong class="text-ember">Error</strong><br>${errorMessage(error)}`, 'ember'); } setBusy(button, false);
+      try { const response = await fetch(`${BACKEND_URL}/mint`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ attendee_address: document.querySelector('#attendee').value.trim() }) }); const data = await response.json(); if (!response.ok) throw new Error(data.detail); showResult(result, `<strong class="text-lime">Ticket emitido</strong><br><span class="break-all">TX: ${data.transaction_hash}</span>`, 'aqua'); } catch (error) { showResult(result, `<strong class="text-ember">Error</strong><br>${errorMessage(error)}`, 'ember'); } setBusy(button, false);
     });
 
     document.querySelector('#scan-form').addEventListener('submit', async (event) => {
@@ -290,7 +293,7 @@
       qrScanner.render(onScanSuccess, () => {});
     });
 
-    document.querySelector('#withdraw-button').addEventListener('click', async (event) => { const button = event.currentTarget; const result = document.querySelector('#withdraw-result'); setBusy(button, true); try { const response = await fetch('/withdraw', { method: 'POST' }); const data = await response.json(); if (!response.ok) throw new Error(data.detail); showResult(result, `<strong class="text-lime">Regalías retiradas</strong><br><span class="break-all">TX: ${data.transaction_hash}</span>`, 'lime'); } catch (error) { showResult(result, `<strong class="text-ember">Error</strong><br>${errorMessage(error)}`, 'ember'); } setBusy(button, false); });
+    document.querySelector('#withdraw-button').addEventListener('click', async (event) => { const button = event.currentTarget; const result = document.querySelector('#withdraw-result'); setBusy(button, true); try { const response = await fetch(`${BACKEND_URL}/withdraw`, { method: 'POST' }); const data = await response.json(); if (!response.ok) throw new Error(data.detail); showResult(result, `<strong class="text-lime">Regalías retiradas</strong><br><span class="break-all">TX: ${data.transaction_hash}</span>`, 'lime'); } catch (error) { showResult(result, `<strong class="text-ember">Error</strong><br>${errorMessage(error)}`, 'ember'); } setBusy(button, false); });
 
     document.querySelector('#sell-form').addEventListener('submit', async (event) => { event.preventDefault(); const button = event.target.querySelector('button'); const result = document.querySelector('#sell-result'); setBusy(button, true); try { if (!market) await connectWallet(); const tokenId = document.querySelector('#sell-token').value; const price = ethers.parseEther(document.querySelector('#sell-price').value); const tx = await market.listTicket(tokenId, price); await tx.wait(); showResult(result, `<strong class="text-aqua">Ticket listado</strong><br><span class="break-all">TX: ${tx.hash}</span>`, 'aqua'); } catch (error) { showResult(result, `<strong class="text-ember">Error</strong><br>${errorMessage(error)}`, 'ember'); } setBusy(button, false); });
 
