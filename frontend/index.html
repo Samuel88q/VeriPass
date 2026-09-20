@@ -227,12 +227,24 @@
       document.querySelector(`#${tab.dataset.tab}`).hidden = false;
     }));
 
+    function normalizeChainId(value) {
+      if (value === undefined || value === null) return null;
+      const raw = String(value).trim();
+      if (!raw) return null;
+      try {
+        return BigInt(raw.startsWith('0x') || raw.startsWith('0X') ? raw : raw);
+      } catch {
+        return null;
+      }
+    }
+
     async function connectWallet() {
       if (!window.ethereum) throw new Error('Instala MetaMask para usar el mercado');
       browserProvider = new ethers.BrowserProvider(window.ethereum);
       await browserProvider.send('eth_requestAccounts', []);
       const network = await browserProvider.getNetwork();
-      if (network.chainId !== 133n) throw new Error('Cambia MetaMask a HSK Chain Testnet (chain ID 133)');
+      const networkChainId = normalizeChainId(network.chainId);
+      if (networkChainId !== 133n) throw new Error('Cambia MetaMask a HSK Chain Testnet (chain ID 133)');
       signer = await browserProvider.getSigner();
       market = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
       const address = await signer.getAddress();
