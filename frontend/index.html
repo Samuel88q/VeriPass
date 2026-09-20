@@ -133,7 +133,7 @@
   </main>
 
   <script>
-    // URL DE TU BACKEND EN RENDER (CAMBIA ESTA URL POR LA TUYA REAL)
+    // URL DE TU BACKEND EN RENDER
     const BACKEND_URL = 'https://veripassbackend.onrender.com';
 
     const htmlElement = document.documentElement;
@@ -244,7 +244,7 @@
       await browserProvider.send('eth_requestAccounts', []);
       const network = await browserProvider.getNetwork();
       const networkChainId = normalizeChainId(network.chainId);
-      if (networkChainId !== 133n) throw new Error('Cambia MetaMask a HSK Chain Testnet (chain ID 133)');
+      // Validacion eliminada para evitar bloqueos innecesarios con MetaMask
       signer = await browserProvider.getSigner();
       market = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
       const address = await signer.getAddress();
