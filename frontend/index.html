@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VeriPass</title>
+<<<<<<< HEAD
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎟️</text></svg>">
+=======
+>>>>>>> bfc0df2232dc6f4c3448dcd9b41b0d14b04799e1
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/ethers@6.15.0/dist/ethers.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
@@ -33,6 +36,7 @@
     .tab-panel[hidden] { display: none; }
   </style>
 </head>
+<<<<<<< HEAD
 <body class="min-h-screen bg-app text-ink font-sans transition-colors duration-300 dark:bg-dark-app dark:text-dark-ink">
   <main class="mx-auto max-w-6xl px-4 py-6 sm:px-6 md:px-10 md:py-10">
     <header class="mb-8 flex flex-col gap-5 border-b border-line pb-7 dark:border-dark-line md:flex-row md:items-end md:justify-between">
@@ -60,10 +64,28 @@
       <button class="tab tab-active min-h-12 rounded-lg px-3 py-3 text-xs font-bold uppercase tracking-wider transition" data-tab="staff" data-i18n="tab_staff">Staff</button>
       <button class="tab min-h-12 rounded-lg px-3 py-3 text-xs font-bold uppercase tracking-wider text-muted transition hover:bg-app dark:text-dark-muted dark:hover:bg-dark-app" data-tab="manager" data-i18n="tab_mgr">Gerente</button>
       <button class="tab min-h-12 rounded-lg px-3 py-3 text-xs font-bold uppercase tracking-wider text-muted transition hover:bg-app dark:text-dark-muted dark:hover:bg-dark-app" data-tab="market" data-i18n="tab_mkt">Usuario P2P</button>
+=======
+<body class="min-h-screen bg-app text-ink font-sans transition-colors dark:bg-dark-app dark:text-dark-ink">
+  <main class="mx-auto max-w-6xl px-4 py-6 sm:px-6 md:px-10 md:py-10">
+    <header class="mb-8 flex flex-col gap-5 border-b border-line pb-7 dark:border-dark-line md:flex-row md:items-end md:justify-between">
+      <div>
+        <p class="mb-3 text-xs font-semibold uppercase tracking-[.24em] text-action dark:text-dark-action">VERIPASS // EVENT ACCESS</p>
+        <h1 class="text-3xl font-bold tracking-tight md:text-5xl">VeriPass</h1>
+        <p class="mt-3 max-w-xl text-muted dark:text-dark-muted">Acceso verificable y ticketing P2P regulado para eventos reales.</p>
+      </div>
+      <div class="flex items-center gap-2 text-xs font-semibold text-muted dark:text-dark-muted"><span class="h-2 w-2 animate-pulse rounded-full bg-success"></span>HSK TESTNET / 133</div>
+    </header>
+
+    <nav class="mb-8 grid grid-cols-3 gap-2 rounded-lg border border-line bg-card p-2 dark:border-dark-line dark:bg-dark-card" aria-label="Paneles">
+      <button class="tab tab-active min-h-12 rounded-lg px-3 py-3 text-xs font-bold uppercase tracking-wider transition" data-tab="staff">Staff</button>
+      <button class="tab min-h-12 rounded-lg px-3 py-3 text-xs font-bold uppercase tracking-wider text-muted transition hover:bg-app dark:text-dark-muted dark:hover:bg-dark-app" data-tab="manager">Gerente</button>
+      <button class="tab min-h-12 rounded-lg px-3 py-3 text-xs font-bold uppercase tracking-wider text-muted transition hover:bg-app dark:text-dark-muted dark:hover:bg-dark-app" data-tab="market">Usuario P2P</button>
+>>>>>>> bfc0df2232dc6f4c3448dcd9b41b0d14b04799e1
     </nav>
 
     <section id="staff" class="tab-panel grid gap-6 lg:grid-cols-2">
       <article class="rounded-lg border border-line bg-card p-6 shadow-sm dark:border-dark-line dark:bg-dark-card md:p-8">
+<<<<<<< HEAD
         <p class="text-xs font-semibold uppercase tracking-[.22em] text-action dark:text-dark-action" data-i18n="taquilla">01 / TAQUILLA</p>
         <h2 class="mt-3 text-2xl font-bold" data-i18n="emit_title">Emitir acceso</h2>
         <p class="mt-2 text-sm text-muted dark:text-dark-muted" data-i18n="emit_desc">El staff emite un ticket Soulbound a la wallet del asistente.</p>
@@ -71,11 +93,21 @@
           <label class="block text-sm font-semibold" for="attendee" data-i18n="wallet_lbl">Wallet del asistente</label>
           <input id="attendee" required pattern="^0x[a-fA-F0-9]{40}$" placeholder="0x..." class="h-12 w-full rounded-lg border border-line bg-app px-4 text-sm outline-none transition focus:border-action dark:border-dark-line dark:bg-dark-app dark:focus:border-dark-action" />
           <button data-label="Emitir Soulbound Ticket" data-i18n="emit_btn" class="min-h-12 w-full rounded-lg bg-action px-4 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 disabled:opacity-50 dark:bg-dark-action">Emitir Soulbound Ticket</button>
+=======
+        <p class="text-xs font-semibold uppercase tracking-[.22em] text-action dark:text-dark-action">01 / TAQUILLA</p>
+        <h2 class="mt-3 text-2xl font-bold">Emitir acceso</h2>
+        <p class="mt-2 text-sm text-muted dark:text-dark-muted">El staff emite un ticket Soulbound a la wallet del asistente.</p>
+        <form id="mint-form" class="mt-8 space-y-4">
+          <label class="block text-sm font-semibold" for="attendee">Wallet del asistente</label>
+          <input id="attendee" required pattern="^0x[a-fA-F0-9]{40}$" placeholder="0x..." class="h-12 w-full rounded-lg border border-line bg-app px-4 text-sm outline-none transition focus:border-action dark:border-dark-line dark:bg-dark-app dark:focus:border-dark-action" />
+          <button data-label="Emitir Soulbound Ticket" class="min-h-12 w-full rounded-lg bg-action px-4 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 disabled:opacity-50 dark:bg-dark-action">Emitir Soulbound Ticket</button>
+>>>>>>> bfc0df2232dc6f4c3448dcd9b41b0d14b04799e1
         </form>
         <div id="mint-result" class="mt-5 hidden rounded-lg border border-success bg-success/10 p-4 text-base"></div>
       </article>
 
       <article class="rounded-lg border border-line bg-card p-6 shadow-sm dark:border-dark-line dark:bg-dark-card md:p-8">
+<<<<<<< HEAD
         <p class="text-xs font-semibold uppercase tracking-[.22em] text-action dark:text-dark-action" data-i18n="puerta">02 / PUERTA</p>
         <h2 class="mt-3 text-2xl font-bold" data-i18n="scan_title">Validar entrada</h2>
         <p class="mt-2 text-sm text-muted dark:text-dark-muted" data-i18n="scan_desc">Simula el escaneo NFC con el Token ID.</p>
@@ -85,6 +117,17 @@
           <button data-label="Validar Entrada" data-i18n="scan_btn" class="min-h-12 w-full rounded-lg bg-action px-4 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 disabled:opacity-50 dark:bg-dark-action">Validar Entrada</button>
         </form>
         <button id="qr-scan-button" data-label="📷 Escanear QR con Cámara" data-i18n="qr_btn" class="mt-4 min-h-14 w-full rounded-lg border-2 border-action px-4 py-3 text-base font-bold text-action transition hover:bg-action hover:text-white dark:border-dark-action dark:text-dark-action dark:hover:bg-dark-action">📷 Escanear QR con Cámara</button>
+=======
+        <p class="text-xs font-semibold uppercase tracking-[.22em] text-action dark:text-dark-action">02 / PUERTA</p>
+        <h2 class="mt-3 text-2xl font-bold">Validar entrada</h2>
+        <p class="mt-2 text-sm text-muted dark:text-dark-muted">Simula el escaneo NFC con el Token ID.</p>
+        <form id="scan-form" class="mt-8 space-y-4">
+          <label class="block text-sm font-semibold" for="token-id">Token ID</label>
+          <input id="token-id" required min="1" type="number" placeholder="Ej. 1" class="h-12 w-full rounded-lg border border-line bg-app px-4 text-sm outline-none transition focus:border-action dark:border-dark-line dark:bg-dark-app dark:focus:border-dark-action" />
+          <button data-label="Validar Entrada" class="min-h-12 w-full rounded-lg bg-action px-4 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 disabled:opacity-50 dark:bg-dark-action">Validar Entrada</button>
+        </form>
+        <button id="qr-scan-button" data-label="📷 Escanear QR con Cámara" class="mt-4 min-h-14 w-full rounded-lg border-2 border-action px-4 py-3 text-base font-bold text-action transition hover:bg-action hover:text-white dark:border-dark-action dark:text-dark-action dark:hover:bg-dark-action">📷 Escanear QR con Cámara</button>
+>>>>>>> bfc0df2232dc6f4c3448dcd9b41b0d14b04799e1
         <div id="qr-reader" class="mt-4 w-full overflow-hidden rounded-lg"></div>
         <div id="scan-result" class="mt-5 hidden rounded-lg p-5 text-base"></div>
       </article>
@@ -92,6 +135,7 @@
 
     <section id="manager" class="tab-panel" hidden>
       <article class="mx-auto max-w-3xl rounded-lg border border-line bg-card p-6 shadow-sm dark:border-dark-line dark:bg-dark-card md:p-10">
+<<<<<<< HEAD
         <p class="text-xs font-semibold uppercase tracking-[.22em] text-action dark:text-dark-action" data-i18n="mgr_sub">MANAGER // TREASURY</p>
         <h2 class="mt-3 text-3xl font-bold" data-i18n="mgr_title">Control de regalías</h2>
         <p class="mt-3 max-w-xl text-muted dark:text-dark-muted" data-i18n="mgr_desc">Retira el 10% acumulado por cada operación del mercado P2P hacia la wallet owner del evento.</p>
@@ -100,12 +144,23 @@
           <div class="rounded-lg border border-line bg-app p-5 dark:border-dark-line dark:bg-dark-app"><p class="text-xs text-muted dark:text-dark-muted" data-i18n="mgr_role">ROL</p><p class="mt-2 text-xl font-bold text-action dark:text-dark-action">CONTRACT OWNER</p></div>
         </div>
         <button id="withdraw-button" data-label="Retirar regalías" data-i18n="mgr_btn" class="mt-8 min-h-12 w-full rounded-lg bg-action px-4 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 disabled:opacity-50 dark:bg-dark-action">Retirar regalías</button>
+=======
+        <p class="text-xs font-semibold uppercase tracking-[.22em] text-action dark:text-dark-action">MANAGER // TREASURY</p>
+        <h2 class="mt-3 text-3xl font-bold">Control de regalías</h2>
+        <p class="mt-3 max-w-xl text-muted dark:text-dark-muted">Retira el 10% acumulado por cada operación del mercado P2P hacia la wallet owner del evento.</p>
+        <div class="mt-8 grid gap-4 sm:grid-cols-2">
+          <div class="rounded-lg border border-line bg-app p-5 dark:border-dark-line dark:bg-dark-app"><p class="text-xs text-muted dark:text-dark-muted">RED</p><p class="mt-2 text-xl font-bold text-action dark:text-dark-action">HSK / 133</p></div>
+          <div class="rounded-lg border border-line bg-app p-5 dark:border-dark-line dark:bg-dark-app"><p class="text-xs text-muted dark:text-dark-muted">ROL</p><p class="mt-2 text-xl font-bold text-action dark:text-dark-action">CONTRACT OWNER</p></div>
+        </div>
+        <button id="withdraw-button" data-label="Retirar regalías" class="mt-8 min-h-12 w-full rounded-lg bg-action px-4 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 disabled:opacity-50 dark:bg-dark-action">Retirar regalías</button>
+>>>>>>> bfc0df2232dc6f4c3448dcd9b41b0d14b04799e1
         <div id="withdraw-result" class="mt-5 hidden rounded-lg border border-success bg-success/10 p-4 text-base"></div>
       </article>
     </section>
 
     <section id="market" class="tab-panel" hidden>
       <div class="mb-6 flex flex-col gap-4 rounded-lg border border-line bg-card p-6 dark:border-dark-line dark:bg-dark-card md:flex-row md:items-center md:justify-between">
+<<<<<<< HEAD
         <div><p class="text-xs font-semibold uppercase tracking-[.22em] text-action dark:text-dark-action" data-i18n="mkt_sub">USER WALLET // P2P</p><h2 class="mt-2 text-2xl font-bold" data-i18n="mkt_title">Mercado directo</h2><p class="mt-2 text-sm text-muted dark:text-dark-muted" data-i18n="mkt_desc">MetaMask firma la operación y el usuario paga su propio gas.</p></div>
         <button id="connect-button" class="min-h-12 rounded-lg bg-action px-5 py-3 text-xs font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 dark:bg-dark-action" data-i18n="mkt_conn">Conectar MetaMask</button>
       </div>
@@ -120,11 +175,28 @@
             <input id="qr-token-id" required min="1" type="number" placeholder="Ej. 1" class="mt-2 h-12 w-full rounded-lg border border-line bg-app px-4 text-sm outline-none focus:border-action dark:border-dark-line dark:bg-dark-app dark:focus:border-dark-action" />
           </div>
           <button id="generate-qr-button" class="min-h-12 rounded-lg bg-action px-6 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 dark:bg-dark-action" data-i18n="mkt_qr_btn">Generar QR</button>
+=======
+        <div><p class="text-xs font-semibold uppercase tracking-[.22em] text-action dark:text-dark-action">USER WALLET // P2P</p><h2 class="mt-2 text-2xl font-bold">Mercado directo</h2><p class="mt-2 text-sm text-muted dark:text-dark-muted">MetaMask firma la operación y el usuario paga su propio gas.</p></div>
+        <button id="connect-button" class="min-h-12 rounded-lg bg-action px-5 py-3 text-xs font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 dark:bg-dark-action">Conectar MetaMask</button>
+      </div>
+      <p id="wallet-status" class="mb-6 hidden break-all text-xs text-muted dark:text-dark-muted"></p>
+      <article class="mb-6 rounded-lg border border-line bg-card p-6 dark:border-dark-line dark:bg-dark-card md:p-8">
+        <p class="text-xs font-semibold uppercase tracking-[.22em] text-action dark:text-dark-action">ACCESS PASS</p>
+        <h3 class="mt-3 text-2xl font-bold">Generar Pase de Acceso</h3>
+        <p class="mt-2 text-sm text-muted dark:text-dark-muted">Crea un QR dinámico para compartir el acceso asociado a un Token ID.</p>
+        <div class="mt-6 grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
+          <div>
+            <label class="block text-sm font-semibold" for="qr-token-id">Token ID</label>
+            <input id="qr-token-id" required min="1" type="number" placeholder="Ej. 1" class="mt-2 h-12 w-full rounded-lg border border-line bg-app px-4 text-sm outline-none focus:border-action dark:border-dark-line dark:bg-dark-app dark:focus:border-dark-action" />
+          </div>
+          <button id="generate-qr-button" class="min-h-12 rounded-lg bg-action px-6 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 dark:bg-dark-action">Generar QR</button>
+>>>>>>> bfc0df2232dc6f4c3448dcd9b41b0d14b04799e1
         </div>
         <canvas id="qr-canvas" class="mx-auto mt-4 rounded-lg bg-white p-3"></canvas>
         <p id="qr-status" class="mt-3 text-center text-sm text-muted dark:text-dark-muted"></p>
       </article>
       <div class="grid gap-6 lg:grid-cols-2">
+<<<<<<< HEAD
         <article class="rounded-lg border border-line bg-card p-6 dark:border-dark-line dark:bg-dark-card md:p-8"><p class="text-xs font-semibold uppercase tracking-[.22em] text-action dark:text-dark-action" data-i18n="mkt_list">LISTING</p><h3 class="mt-3 text-2xl font-bold" data-i18n="mkt_sell_title">Vender Ticket</h3><form id="sell-form" class="mt-7 space-y-4"><input id="sell-token" required min="1" type="number" placeholder="Token ID" data-i18n="mkt_sell_token" class="h-12 w-full rounded-lg border border-line bg-app px-4 text-sm outline-none focus:border-action dark:border-dark-line dark:bg-dark-app dark:focus:border-dark-action" /><input id="sell-price" required min="0" step="any" type="number" placeholder="Precio en HSK" data-i18n="mkt_sell_price" class="h-12 w-full rounded-lg border border-line bg-app px-4 text-sm outline-none focus:border-action dark:border-dark-line dark:bg-dark-app dark:focus:border-dark-action" /><button data-label="Listar ticket" data-i18n="mkt_sell_btn" class="min-h-12 w-full rounded-lg bg-action px-4 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 disabled:opacity-50 dark:bg-dark-action">Listar ticket</button></form><div id="sell-result" class="mt-5 hidden rounded-lg border border-success bg-success/10 p-4 text-base"></div></article>
         <article class="rounded-lg border border-line bg-card p-6 dark:border-dark-line dark:bg-dark-card md:p-8"><p class="text-xs font-semibold uppercase tracking-[.22em] text-action dark:text-dark-action" data-i18n="mkt_buy">PURCHASE</p><h3 class="mt-3 text-2xl font-bold" data-i18n="mkt_buy_title">Comprar Ticket</h3><form id="buy-form" class="mt-7 space-y-4"><input id="buy-token" required min="1" type="number" placeholder="Token ID" data-i18n="mkt_buy_token" class="h-12 w-full rounded-lg border border-line bg-app px-4 text-sm outline-none focus:border-action dark:border-dark-line dark:bg-dark-app dark:focus:border-dark-action" /><input id="buy-price" required min="0" step="any" type="number" placeholder="Precio a pagar en HSK" data-i18n="mkt_buy_price" class="h-12 w-full rounded-lg border border-line bg-app px-4 text-sm outline-none focus:border-action dark:border-dark-line dark:bg-dark-app dark:focus:border-dark-action" /><button data-label="Comprar ticket" data-i18n="mkt_buy_btn" class="min-h-12 w-full rounded-lg bg-action px-4 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 disabled:opacity-50 dark:bg-dark-action">Comprar ticket</button></form><div id="buy-result" class="mt-5 hidden rounded-lg border border-success bg-success/10 p-4 text-base"></div></article>
       </div>
@@ -211,13 +283,60 @@
 
     // Actualizada para responder en el idioma correcto
     const setBusy = (button, busy) => { button.disabled = busy; button.textContent = busy ? (currentLang === 'es' ? 'Procesando...' : 'Processing...') : button.dataset.label; };
+=======
+        <article class="rounded-lg border border-line bg-card p-6 dark:border-dark-line dark:bg-dark-card md:p-8"><p class="text-xs font-semibold uppercase tracking-[.22em] text-action dark:text-dark-action">LISTING</p><h3 class="mt-3 text-2xl font-bold">Vender Ticket</h3><form id="sell-form" class="mt-7 space-y-4"><input id="sell-token" required min="1" type="number" placeholder="Token ID" class="h-12 w-full rounded-lg border border-line bg-app px-4 text-sm outline-none focus:border-action dark:border-dark-line dark:bg-dark-app dark:focus:border-dark-action" /><input id="sell-price" required min="0" step="any" type="number" placeholder="Precio en HSK" class="h-12 w-full rounded-lg border border-line bg-app px-4 text-sm outline-none focus:border-action dark:border-dark-line dark:bg-dark-app dark:focus:border-dark-action" /><button data-label="Listar ticket" class="min-h-12 w-full rounded-lg bg-action px-4 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 disabled:opacity-50 dark:bg-dark-action">Listar ticket</button></form><div id="sell-result" class="mt-5 hidden rounded-lg border border-success bg-success/10 p-4 text-base"></div></article>
+        <article class="rounded-lg border border-line bg-card p-6 dark:border-dark-line dark:bg-dark-card md:p-8"><p class="text-xs font-semibold uppercase tracking-[.22em] text-action dark:text-dark-action">PURCHASE</p><h3 class="mt-3 text-2xl font-bold">Comprar Ticket</h3><form id="buy-form" class="mt-7 space-y-4"><input id="buy-token" required min="1" type="number" placeholder="Token ID" class="h-12 w-full rounded-lg border border-line bg-app px-4 text-sm outline-none focus:border-action dark:border-dark-line dark:bg-dark-app dark:focus:border-dark-action" /><input id="buy-price" required min="0" step="any" type="number" placeholder="Precio a pagar en HSK" class="h-12 w-full rounded-lg border border-line bg-app px-4 text-sm outline-none focus:border-action dark:border-dark-line dark:bg-dark-app dark:focus:border-dark-action" /><button data-label="Comprar ticket" class="min-h-12 w-full rounded-lg bg-action px-4 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-blue-700 disabled:opacity-50 dark:bg-dark-action">Comprar ticket</button></form><div id="buy-result" class="mt-5 hidden rounded-lg border border-success bg-success/10 p-4 text-base"></div></article>
+      </div>
+    </section>
+
+    <footer class="mt-8 flex flex-col gap-2 text-xs text-muted dark:text-dark-muted md:flex-row md:justify-between"><span>VERIPASS / REGULATED ACCESS</span><span>HSK TESTNET / CHAIN 133</span></footer>
+  </main>
+
+  <script>
+    const CONTRACT_ADDRESS = '0xd57359dDD6fAf3792a37de9483c494Eb2B315833';
+    const CONTRACT_ABI = [
+      'function consumed(uint256) view returns (bool)',
+      'function ticketPrices(uint256) view returns (uint256)',
+      'function owner() view returns (address)',
+      'function ownerOf(uint256) view returns (address)',
+      'function balanceOf(address) view returns (uint256)',
+      'function tokenURI(uint256) view returns (string)',
+      'function tokenIdForHash(bytes32) view returns (uint256)',
+      'function ticketHash(uint256) view returns (bytes32)',
+      'function mintTicket(address to) returns (uint256)',
+      'function consumeTicket(uint256 tokenId)',
+      'function listTicket(uint256 tokenId, uint256 price)',
+      'function buyTicket(uint256 tokenId) payable',
+      'function withdraw()',
+      'function approve(address,uint256)',
+      'function setApprovalForAll(address,bool)',
+      'event TicketListed(uint256 indexed tokenId, address indexed seller, uint256 price)',
+      'event TicketSold(uint256 indexed tokenId, address indexed seller, address indexed buyer, uint256 price)',
+      'event TicketIssued(address indexed recipient, uint256 indexed tokenId, bytes32 indexed ticketHash, string metadataURI)',
+      'event TicketConsumed(uint256 indexed tokenId, address indexed attendee)',
+      'event TicketRevoked(uint256 indexed tokenId, bytes32 indexed ticketHash)'
+    ];
+    let browserProvider;
+    let signer;
+    let market;
+
+    const setBusy = (button, busy) => { button.disabled = busy; button.textContent = busy ? 'Procesando...' : button.dataset.label; };
+>>>>>>> bfc0df2232dc6f4c3448dcd9b41b0d14b04799e1
     const showResult = (element, message, tone = 'aqua') => { element.className = `mt-5 border border-${tone}/30 bg-${tone}/5 p-4 text-sm`; element.innerHTML = message; };
     const errorMessage = (error) => error?.shortMessage || error?.reason || error?.message || 'Operación rechazada';
     let qrScanner;
 
     async function validateToken(tokenId) {
       const result = document.querySelector('#scan-result');
+<<<<<<< HEAD
       const response = await fetch('/scan_nfc', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token_id: Number(tokenId), nfc_payload: 'demo' }) });
+=======
+      const response = await fetch('/scan_nfc', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token_id: Number(tokenId), nfc_payload: 'demo' })
+      });
+>>>>>>> bfc0df2232dc6f4c3448dcd9b41b0d14b04799e1
       const data = await response.json();
       if (!response.ok) throw new Error(data.detail || 'Ticket rechazado');
       showResult(result, `<div class="text-center font-display text-2xl font-bold text-lime">ACCESO CONCEDIDO</div><div class="mt-2 break-all text-xs">TX: ${data.transaction_hash}</div>`, 'lime');
@@ -239,7 +358,11 @@
       signer = await browserProvider.getSigner();
       market = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
       const address = await signer.getAddress();
+<<<<<<< HEAD
       document.querySelector('#wallet-status').textContent = currentLang === 'es' ? `Wallet conectada: ${address}` : `Wallet connected: ${address}`;
+=======
+      document.querySelector('#wallet-status').textContent = `Wallet conectada: ${address}`;
+>>>>>>> bfc0df2232dc6f4c3448dcd9b41b0d14b04799e1
       document.querySelector('#wallet-status').classList.remove('hidden');
       document.querySelector('#connect-button').textContent = `${address.slice(0, 6)}...${address.slice(-4)}`;
     }
@@ -260,13 +383,21 @@
       const tokenId = document.querySelector('#qr-token-id').value;
       const status = document.querySelector('#qr-status');
       if (!tokenId || Number(tokenId) < 1) {
+<<<<<<< HEAD
         status.textContent = currentLang === 'es' ? 'Introduce un Token ID válido.' : 'Enter a valid Token ID.';
+=======
+        status.textContent = 'Introduce un Token ID válido.';
+>>>>>>> bfc0df2232dc6f4c3448dcd9b41b0d14b04799e1
         status.className = 'mt-3 text-center text-sm text-danger';
         return;
       }
       const value = JSON.stringify({ id: tokenId, dyn: Date.now() });
       new QRious({ element: document.getElementById('qr-canvas'), value, size: 200 });
+<<<<<<< HEAD
       status.textContent = currentLang === 'es' ? 'QR dinámico generado correctamente.' : 'Dynamic QR generated successfully.';
+=======
+      status.textContent = 'QR dinámico generado correctamente.';
+>>>>>>> bfc0df2232dc6f4c3448dcd9b41b0d14b04799e1
       status.className = 'mt-3 text-center text-sm text-success';
     });
 
@@ -274,7 +405,11 @@
       const button = event.currentTarget;
       if (qrScanner) return;
       setBusy(button, true);
+<<<<<<< HEAD
       button.dataset.label = currentLang === 'es' ? '📷 Detener escáner' : '📷 Stop scanner';
+=======
+      button.dataset.label = '📷 Detener escáner';
+>>>>>>> bfc0df2232dc6f4c3448dcd9b41b0d14b04799e1
       button.textContent = button.dataset.label;
       qrScanner = new Html5QrcodeScanner('qr-reader', { fps: 10, qrbox: { width: 250, height: 250 } }, false);
       const onScanSuccess = async (decodedText) => {
@@ -290,7 +425,11 @@
           if (qrScanner) { await qrScanner.clear().catch(() => {}); qrScanner = null; }
         }
         button.disabled = false;
+<<<<<<< HEAD
         button.dataset.label = currentLang === 'es' ? '📷 Escanear QR con Cámara' : '📷 Scan QR with Camera';
+=======
+        button.dataset.label = '📷 Escanear QR con Cámara';
+>>>>>>> bfc0df2232dc6f4c3448dcd9b41b0d14b04799e1
         button.textContent = button.dataset.label;
       };
       qrScanner.render(onScanSuccess, () => {});
@@ -303,4 +442,8 @@
     document.querySelector('#buy-form').addEventListener('submit', async (event) => { event.preventDefault(); const button = event.target.querySelector('button'); const result = document.querySelector('#buy-result'); setBusy(button, true); try { if (!market) await connectWallet(); const tokenId = document.querySelector('#buy-token').value; const price = ethers.parseEther(document.querySelector('#buy-price').value); const tx = await market.buyTicket(tokenId, { value: price }); await tx.wait(); showResult(result, `<strong class="text-lime">Ticket comprado</strong><br><span class="break-all">TX: ${tx.hash}</span>`, 'lime'); } catch (error) { showResult(result, `<strong class="text-ember">Error</strong><br>${errorMessage(error)}`, 'ember'); } setBusy(button, false); });
   </script>
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> bfc0df2232dc6f4c3448dcd9b41b0d14b04799e1
